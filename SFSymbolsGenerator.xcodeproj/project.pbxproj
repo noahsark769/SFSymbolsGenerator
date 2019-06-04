@@ -13,6 +13,7 @@
 		A13C924B22A61A2200B033ED /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A13C924A22A61A2200B033ED /* Assets.xcassets */; };
 		A13C924E22A61A2200B033ED /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A13C924D22A61A2200B033ED /* Preview Assets.xcassets */; };
 		A13C925122A61A2200B033ED /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A13C924F22A61A2200B033ED /* LaunchScreen.storyboard */; };
+		A13C925922A61EAA00B033ED /* Symbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13C925822A61EAA00B033ED /* Symbols.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		A13C924D22A61A2200B033ED /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		A13C925022A61A2200B033ED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A13C925222A61A2200B033ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A13C925822A61EAA00B033ED /* Symbols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Symbols.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 				A13C924F22A61A2200B033ED /* LaunchScreen.storyboard */,
 				A13C925222A61A2200B033ED /* Info.plist */,
 				A13C924C22A61A2200B033ED /* Preview Content */,
+				A13C925822A61EAA00B033ED /* Symbols.swift */,
 			);
 			path = SFSymbolsGenerator;
 			sourceTree = "<group>";
@@ -147,6 +150,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A13C924522A61A1F00B033ED /* AppDelegate.swift in Sources */,
+				A13C925922A61EAA00B033ED /* Symbols.swift in Sources */,
 				A13C924722A61A1F00B033ED /* SceneDelegate.swift in Sources */,
 				A13C924922A61A1F00B033ED /* ContentView.swift in Sources */,
 			);

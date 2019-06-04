@@ -8,11 +8,66 @@
 
 import UIKit
 import SwiftUI
+import CoreImage
+
+extension UIImage {
+
+    func tinted(color: UIColor) -> UIImage {
+
+        UIGraphicsBeginImageContextWithOptions(self.size, false, UIScreen.main.scale)
+        guard let context = UIGraphicsGetCurrentContext() else { return self }
+        guard let cgImage = cgImage else { return self }
+
+        // flip the image
+        context.scaleBy(x: 1.0, y: -1.0)
+        context.translateBy(x: 0.0, y: -size.height)
+
+        // multiply blend mode
+        context.setBlendMode(.multiply)
+
+        let rect = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+        context.clip(to: rect, mask: cgImage)
+        color.setFill()
+        context.fill(rect)
+
+        // create uiimage
+        guard let newImage = UIGraphicsGetImageFromCurrentImageContext() else { return self }
+        UIGraphicsEndImageContext()
+
+        return newImage
+
+    }
+
+}
+
+extension FileManager {
+    var documentsDirectory: URL {
+        return self.urls(for: .documentDirectory, in: .userDomainMask).last!
+    }
+}
+
+struct StyledSystemImage {
+    let style: UIUserInterfaceStyle
+    let image: UIImage
+
+    init(name: String, style: UIUserInterfaceStyle) {
+        let image = UIImage(systemName: name)!
+        let sizedImage = image.applyingSymbolConfiguration(UIImage.SymbolConfiguration(font: UIFont.systemFont(ofSize: 50)))!
+        self.image = style == .light ? sizedImage.tinted(color: .white) : sizedImage
+        self.style = style
+    }
+
+    var filename: String {
+        switch style {
+        case .dark: return "dark.png"
+        case .light: return "light.png"
+        default: fatalError()
+        }
+    }
+}
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
     var window: UIWindow?
-
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -24,6 +79,30 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.rootViewController = UIHostingController(rootView: ContentView())
         self.window = window
         window.makeKeyAndVisible()
+
+        for name in Symbols.symbols {
+            self.export(name: name)
+        }
+    }
+
+    // "waveform.path.badge.minus"
+    func export(name: String) {
+        let darkImage = StyledSystemImage(name: name, style: .dark)
+        let lightImage = StyledSystemImage(name: name, style: .light)
+        let destinationDirectory = FileManager.default.documentsDirectory
+            .appendingPathComponent("export")
+            .appendingPathComponent(name)
+        try! FileManager.default.createDirectory(at: destinationDirectory, withIntermediateDirectories: true, attributes: nil)
+
+        for image in [darkImage, lightImage] {
+            let finalPath = destinationDirectory.appendingPathComponent(image.filename).path
+            print("Exporting: \(name) to \(finalPath)")
+            FileManager.default.createFile(
+                atPath: finalPath,
+                contents: image.image.pngData(),
+                attributes: nil
+            )
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
